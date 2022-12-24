@@ -1,4 +1,5 @@
 ﻿using EnsureThat;
+using System.Timers;
 
 namespace Cloc;
 
@@ -44,7 +45,7 @@ public abstract class ClocSchedulerBase : IDisposable
         }
     }
 
-    protected static async Task<(ClocJobContext, PeriodicTimer)> WaitAndGetContextAndTimerAsync(
+    protected async Task<(ClocJobContext, PeriodicTimer)> CreateContextAndTimerAsync(
         JobOptions options,
         CancellationToken cancellationToken = default)
     {
@@ -77,7 +78,10 @@ public abstract class ClocSchedulerBase : IDisposable
             await Task.Delay(creationDate - DateTimeOffset.Now, cancellationToken);
         }
 
-        return (context, new PeriodicTimer(pollInterval));
+        var timer = new PeriodicTimer(pollInterval);
+        Timers.Add(timer);
+
+        return (context, timer);
     }
 
     private static TimeSpan GetPollInterval(JobOptions options)

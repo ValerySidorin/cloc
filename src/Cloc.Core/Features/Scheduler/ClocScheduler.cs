@@ -20,9 +20,8 @@ public class ClocScheduler : ClocSchedulerBase
             return;
 
         }
-        (var context, var timer) = await WaitAndGetContextAndTimerAsync(options, cancellationToken)
+        (var context, var timer) = await CreateContextAndTimerAsync(options, cancellationToken)
             .ConfigureAwait(false);
-        Timers.Add(timer);
 
         await clocJob.ExecuteAsync(context, cancellationToken)
             .ConfigureAwait(false);
