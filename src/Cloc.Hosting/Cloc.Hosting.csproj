@@ -10,7 +10,7 @@
 		<RepositoryUrl>https://github.com/ValerySidorin/cloc</RepositoryUrl>
 		<Title>Cloc</Title>
 		<Description>Cloc hosting extensions and entities.</Description>
-		<Version>0.0.1-alpha</Version>
+		<Version>0.0.1-alpha2</Version>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 	</PropertyGroup>

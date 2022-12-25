@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -10,7 +10,7 @@
     <RepositoryUrl>https://github.com/ValerySidorin/cloc</RepositoryUrl>
     <Title>Cloc</Title>
     <Description>Cloc is a tiny and easy to use scheduling library.</Description>
-    <Version>0.0.1-alpha</Version>
+    <Version>0.0.1-alpha2</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
@@ -24,10 +24,6 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Ensure.That" Version="10.1.0" />
   </ItemGroup>
 
 </Project>

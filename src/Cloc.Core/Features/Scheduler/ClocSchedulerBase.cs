@@ -1,4 +1,4 @@
-﻿using EnsureThat;
+﻿using System.Diagnostics;
 
 namespace Cloc;
 
@@ -12,7 +12,7 @@ public abstract class ClocSchedulerBase : IDisposable
 
     public ClocSchedulerBase(ClocOptions options)
     {
-        EnsureArg.IsNotNull(options, nameof(options));
+        Debug.Assert(Options is not null);
         Options = options;
         Timers = new List<PeriodicTimer>();
         RunningTasks = new List<Task>();

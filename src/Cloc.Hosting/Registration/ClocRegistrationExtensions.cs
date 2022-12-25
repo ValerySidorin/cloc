@@ -1,6 +1,6 @@
-﻿using EnsureThat;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics;
 
 namespace Cloc.Hosting;
 
@@ -36,7 +36,7 @@ public static class ClocRegistrationExtensions
             configure(configureOptions);
         }
 
-        EnsureArg.IsNotNull(configuration, nameof(configuration));
+        Debug.Assert(configuration is not null);
 
         if (configureOptions.WithSingletonJobs)
         {
