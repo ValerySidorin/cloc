@@ -10,15 +10,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddClocJob<SampleJob>();
-builder.Services.AddClocJob<SampleLongRunningJob>();
-builder.Services.AddScopedClocJob<SampleScopedJob>();
-builder.Services.AddCloc(builder.Configuration, options =>
+builder.Services.AddCloc<SampleJob>(
+    builder.Configuration, options =>
 {
-    options.WithSingletonJobs = false;
+    options.WithSingletonJobs = true;
     options.WithScopedJobs = true;
     options.ConfigSectionName = "Cloc";
 });
+
+builder.Services.AddCloc<SampleLongRunningJob, SampleScopedJob>(builder.Configuration);
+
 
 var app = builder.Build();
 
