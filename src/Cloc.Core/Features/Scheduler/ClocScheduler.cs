@@ -12,7 +12,7 @@ public class ClocScheduler : ClocSchedulerBase
     }
 
     public override async Task ScheduleAsync(
-        JobOptions options, CancellationToken cancellationToken = default)
+        ClocJobOptions options, CancellationToken cancellationToken = default)
     {
         var clocJob = Jobs.FirstOrDefault(j => j.Id == options.Id);
         if (clocJob is null)

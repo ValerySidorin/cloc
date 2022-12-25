@@ -1,6 +1,6 @@
 ﻿namespace Cloc;
 
-public class JobOptions
+public class ClocJobOptions
 {
     public string Id { get; set; }
 

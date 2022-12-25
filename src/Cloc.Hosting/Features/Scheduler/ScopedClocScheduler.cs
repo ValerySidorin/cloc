@@ -13,7 +13,7 @@ internal sealed class ScopedClocScheduler : ClocSchedulerBase
         _serviceProvider = serviceProvider;
     }
 
-    private static ScopedClocJob GetScopedJob(IServiceScope scope, JobOptions options)
+    private static ScopedClocJob GetScopedJob(IServiceScope scope, ClocJobOptions options)
     {
         return scope.ServiceProvider.GetServices<ScopedClocJob>()
             .FirstOrDefault(j => j.Id == options.Id);
@@ -21,7 +21,7 @@ internal sealed class ScopedClocScheduler : ClocSchedulerBase
 
 
     public override async Task ScheduleAsync(
-        JobOptions options, CancellationToken cancellationToken = default)
+        ClocJobOptions options, CancellationToken cancellationToken = default)
     {
         using var scope = _serviceProvider.CreateScope();
         var scopedJob = GetScopedJob(scope, options);

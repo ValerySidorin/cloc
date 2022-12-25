@@ -31,11 +31,11 @@ public abstract class ClocSchedulerBase : IDisposable
     }
 
     public abstract Task ScheduleAsync(
-        JobOptions options, CancellationToken cancellationToken = default);
+        ClocJobOptions options, CancellationToken cancellationToken = default);
 
 
     private static async Task AwaitStartAsync(
-        JobOptions options, CancellationToken cancellationToken = default)
+        ClocJobOptions options, CancellationToken cancellationToken = default)
     {
         if (options.StartingAt is not null && options.StartingAt > DateTimeOffset.Now)
         {
@@ -45,7 +45,7 @@ public abstract class ClocSchedulerBase : IDisposable
     }
 
     protected async Task<(ClocJobContext, PeriodicTimer)> CreateContextAndTimerAsync(
-        JobOptions options,
+        ClocJobOptions options,
         CancellationToken cancellationToken = default)
     {
         var awaitStartTask = AwaitStartAsync(options, cancellationToken);
@@ -83,7 +83,7 @@ public abstract class ClocSchedulerBase : IDisposable
         return (context, timer);
     }
 
-    private static TimeSpan GetPollInterval(JobOptions options)
+    private static TimeSpan GetPollInterval(ClocJobOptions options)
     {
         return options.Interval switch
         {
@@ -98,7 +98,7 @@ public abstract class ClocSchedulerBase : IDisposable
         };
     }
 
-    private static ClocJobContext GetContext(JobOptions options)
+    private static ClocJobContext GetContext(ClocJobOptions options)
     {
         ClocJobContext context = null;
         if (options.Context is not null)
