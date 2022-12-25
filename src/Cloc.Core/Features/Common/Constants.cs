@@ -3,4 +3,5 @@
 public static class Constants
 {
     public const string DefaultJobType = "Default";
+    public const int DaysInWeek = 7;
 }

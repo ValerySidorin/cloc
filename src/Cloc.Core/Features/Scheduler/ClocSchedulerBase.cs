@@ -55,22 +55,7 @@ public abstract class ClocSchedulerBase : IDisposable
 
         await awaitStartTask.ConfigureAwait(false);
 
-        DateTimeOffset creationDate = (DateTimeOffset)DateTime.Today;
-
-        if (options.DayAt.HasValue)
-        {
-            var curr = DateTime.Today;
-            while (curr.Day != options.DayAt.Value)
-            {
-                curr = curr.AddDays(1);
-            }
-            creationDate = (DateTimeOffset)curr;
-        }
-
-        if (options.TimeAt.HasValue)
-        {
-            creationDate = creationDate.AddTicks(options.TimeAt.Value.Ticks);
-        }
+        var creationDate = ConfigureTimerCreationPointOfTime(options);
 
         if (creationDate > DateTimeOffset.Now)
         {
@@ -93,6 +78,7 @@ public abstract class ClocSchedulerBase : IDisposable
             Interval.Minute => TimeSpan.FromMinutes(options.IntervalNumber),
             Interval.Hour => TimeSpan.FromHours(options.IntervalNumber),
             Interval.Day => TimeSpan.FromDays(options.IntervalNumber),
+            Interval.Week => TimeSpan.FromDays(Constants.DaysInWeek * options.IntervalNumber),
             Interval.Month => TimeSpan.FromDays(1),
             _ => TimeSpan.FromSeconds(1)
         };
@@ -114,6 +100,38 @@ public abstract class ClocSchedulerBase : IDisposable
         }
 
         return context;
+    }
+
+    private DateTimeOffset ConfigureTimerCreationPointOfTime(ClocJobOptions options)
+    {
+        DateTimeOffset creationDate = (DateTimeOffset)DateTime.Today;
+
+        if (options.DayAt.HasValue)
+        {
+            var curr = creationDate;
+            while (curr.Day != options.DayAt.Value)
+            {
+                curr = curr.AddDays(1);
+            }
+            creationDate = curr;
+        }
+
+        if (options.DayOfWeekAt.HasValue)
+        {
+            var curr = creationDate;
+            while (curr.DayOfWeek != options.DayOfWeekAt.Value)
+            {
+                curr = curr.AddDays(1);
+            }
+            creationDate = curr;
+        }
+
+        if (options.TimeAt.HasValue)
+        {
+            creationDate = creationDate.AddTicks(options.TimeAt.Value.Ticks);
+        }
+
+        return creationDate;
     }
 
     public void Dispose()

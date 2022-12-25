@@ -14,5 +14,7 @@ public class ClocJobOptions
 
     public int? DayAt { get; set; }
 
+    public DayOfWeek? DayOfWeekAt { get; set; }
+
     public string Context { get; set; }
 }
