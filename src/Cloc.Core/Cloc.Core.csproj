@@ -4,6 +4,12 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>Valery Sidorin</Authors>
+    <Product>Cloc</Product>
+    <RepositoryUrl>https://github.com/ValerySidorin/cloc</RepositoryUrl>
+    <Title>Cloc</Title>
+    <Description>Cloc is a tiny and easy to use scheduling library.</Description>
   </PropertyGroup>
 
   <ItemGroup>
