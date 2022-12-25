@@ -1,5 +1,4 @@
 ﻿using EnsureThat;
-using System.Timers;
 
 namespace Cloc;
 

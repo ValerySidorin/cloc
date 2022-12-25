@@ -10,13 +10,16 @@ public static class ClocRegistrationExtensions
         this IServiceCollection services)
         where TClocJob : class, IClocJob
     {
-        if (typeof(TClocJob).BaseType == typeof(ClocJob))
+        if (!services.Any(s => s.ServiceType == typeof(TClocJob)))
         {
-            services.AddSingleton(typeof(ClocJob), typeof(TClocJob));
-        }
-        else if (typeof(TClocJob).BaseType == typeof(ScopedClocJob))
-        {
-            services.AddScoped(typeof(ScopedClocJob), typeof(TClocJob));
+            if (typeof(TClocJob).BaseType == typeof(ClocJob))
+            {
+                services.AddSingleton(typeof(ClocJob), typeof(TClocJob));
+            }
+            else if (typeof(TClocJob).BaseType == typeof(ScopedClocJob))
+            {
+                services.AddScoped(typeof(ScopedClocJob), typeof(TClocJob));
+            }
         }
 
         return services;
