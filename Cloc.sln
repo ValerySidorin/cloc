@@ -8,6 +8,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "project files", "project files", "{E488E73B-E493-487A-A259-9347F60DC853}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cloc.Core", "src\Cloc.Core\Cloc.Core.csproj", "{2B853202-E7CD-43D6-879F-862909D7A68B}"
