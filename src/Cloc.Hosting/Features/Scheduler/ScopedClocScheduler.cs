@@ -31,7 +31,7 @@ internal sealed class ScopedClocScheduler : ClocSchedulerBase
             return;
         }
 
-        (var context, var timer) = await WaitAndGetContextAndTimerAsync(options, cancellationToken)
+        (var context, var timer) = await CreateContextAndTimerAsync(options, cancellationToken)
             .ConfigureAwait(false);
 
         await scopedJob.ExecuteAsync(context, cancellationToken)

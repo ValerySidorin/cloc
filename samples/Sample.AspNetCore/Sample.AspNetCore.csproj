@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Cloc.AspNetCore\Cloc.Hosting.csproj" />
+    <ProjectReference Include="..\..\src\Cloc.Hosting\Cloc.Hosting.csproj" />
   </ItemGroup>
 
 </Project>
