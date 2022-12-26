@@ -44,9 +44,10 @@ public static class ClocRegistrationExtensions
             {
                 services.AddHostedService(sp =>
                 {
-                    var jobs = sp.GetServices<ClocJob>();
+                    var jobs = sp.GetServices<ClocJob>().Select(j => j as IClocJob).ToList();
+                    var executor = new ClocJobExecutor(jobs);
                     var options = GetClocOptions(configuration, configureOptions.ConfigSectionName);
-                    var scheduler = new ClocScheduler(options, jobs);
+                    var scheduler = new ClocScheduler(options, executor);
                     return new ClocBackgroundService(scheduler);
                 });
             }
@@ -59,7 +60,8 @@ public static class ClocRegistrationExtensions
                 services.AddHostedService(sp =>
                 {
                     var options = GetClocOptions(configuration, configureOptions.ConfigSectionName);
-                    var scheduler = new ScopedClocScheduler(options, sp);
+                    var executor = new ScopedClocJobExecutor(sp, services);
+                    var scheduler = new ClocScheduler(options, executor);
                     return new ScopedClocBackgroundService(scheduler);
                 });
             }

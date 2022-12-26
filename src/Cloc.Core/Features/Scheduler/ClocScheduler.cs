@@ -1,29 +1,56 @@
-﻿namespace Cloc;
+﻿using Cloc.Core.Extensions;
+using System.Diagnostics;
 
-public class ClocScheduler : ClocSchedulerBase
+namespace Cloc;
+
+public class ClocScheduler : IDisposable
 {
-    protected readonly IEnumerable<ClocJob> Jobs;
+    protected ClocOptions Options { get; }
+
+    protected IClocJobExecutor Executor { get; set; }
+
+    protected ICollection<PeriodicTimer> Timers { get; }
 
     public ClocScheduler(
         ClocOptions options,
-        IEnumerable<ClocJob> jobs) : base(options)
+        IClocJobExecutor executor = null)
     {
-        Jobs = jobs;
+        Debug.Assert(options is not null);
+        Options = options;
+        Executor = executor ?? new ClocJobExecutor();
+        Timers = new List<PeriodicTimer>();
     }
 
-    public override async Task ScheduleAsync(
+    public void Start(CancellationToken cancellationToken = default)
+    {
+        if (Options.Jobs is not null && Options.Jobs.Any())
+        {
+            foreach (var jobOptions in Options.Jobs)
+            {
+#pragma warning disable CS4014
+                ScheduleAsync(jobOptions, cancellationToken);
+#pragma warning restore CS4014
+            }
+        }
+    }
+
+    public void Enlist<TClocJob>(TClocJob job = default)
+            where TClocJob : class, IClocJob
+    {
+        Executor.AddJob(job);
+    }
+
+    private async Task ScheduleAsync(
         ClocJobOptions options, CancellationToken cancellationToken = default)
     {
-        var clocJob = Jobs.FirstOrDefault(j => j.Id == options.Id);
-        if (clocJob is null)
-        {
-            return;
+        var startAt = options.GetStartingPointOfTime();
+        await DelayStartAsync(startAt, cancellationToken).ConfigureAwait(false);
 
-        }
-        (var context, var timer) = await CreateContextAndTimerAsync(options, cancellationToken)
-            .ConfigureAwait(false);
+        var interval = options.GetPollInterval();
+        var timer = new PeriodicTimer(interval);
+        Timers.Add(timer);
 
-        await clocJob.ExecuteAsync(context, cancellationToken)
+        await Executor.ExecuteAsync(options, cancellationToken)
             .ConfigureAwait(false);
 
         while (await timer.WaitForNextTickAsync(cancellationToken).ConfigureAwait(false) &&
@@ -33,8 +60,27 @@ public class ClocScheduler : ClocSchedulerBase
             {
                 return;
             }
-            await clocJob.ExecuteAsync(context, cancellationToken)
-                .ConfigureAwait(false);
+
+            await Executor.ExecuteAsync(options, cancellationToken)
+            .ConfigureAwait(false);
+        }
+    }
+
+    private static async Task DelayStartAsync(
+        DateTimeOffset startAt, 
+        CancellationToken cancellationToken = default)
+    {
+        if (startAt > DateTimeOffset.Now)
+        {
+            await Task.Delay(startAt - DateTimeOffset.Now, cancellationToken);
+        }
+    }
+
+    public void Dispose()
+    {
+        foreach (var timer in Timers)
+        {
+            timer.Dispose();
         }
     }
 }

@@ -10,7 +10,7 @@
 		<RepositoryUrl>https://github.com/ValerySidorin/cloc</RepositoryUrl>
 		<Title>Cloc</Title>
 		<Description>Cloc hosting extensions and entities.</Description>
-		<Version>0.0.1-alpha2</Version>
+		<Version>0.0.1-alpha3</Version>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 	</PropertyGroup>
@@ -33,6 +33,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Cloc.Core\Cloc.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\Scheduler\" />
   </ItemGroup>
 
 </Project>

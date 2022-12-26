@@ -4,9 +4,9 @@ namespace Cloc.Hosting;
 
 internal class ClocBackgroundService : BackgroundService
 {
-    private readonly ClocSchedulerBase _scheduler;
+    private readonly ClocScheduler _scheduler;
 
-    public ClocBackgroundService(ClocSchedulerBase scheduler)
+    public ClocBackgroundService(ClocScheduler scheduler)
     {
         _scheduler = scheduler;
     }

@@ -10,7 +10,7 @@
     <RepositoryUrl>https://github.com/ValerySidorin/cloc</RepositoryUrl>
     <Title>Cloc</Title>
     <Description>Cloc is a tiny and easy to use scheduling library.</Description>
-    <Version>0.0.1-alpha2</Version>
+    <Version>0.0.1-alpha3</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
