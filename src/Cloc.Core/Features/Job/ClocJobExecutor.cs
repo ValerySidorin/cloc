@@ -1,41 +1,37 @@
-﻿using Cloc.Core.Exceptions;
-using Cloc.Core.Extensions;
+﻿using System.Diagnostics;
 
 namespace Cloc;
 
-public class ClocJobExecutor : IClocJobExecutor
+public class ClocJobExecutor : ClocJobExecutorBase
 {
-    private readonly ICollection<IClocJob> _jobs;
+    private readonly ClocJob _job;
 
-    public ClocJobExecutor(ICollection<IClocJob> jobs)
+    public ClocJobExecutor(ClocJob job, ClocJobOptions options)
+        : base(options)
     {
-        _jobs = jobs;
+        Debug.Assert(job is not null);
+
+        _job = job;
+        Options = options;
+        Options.Id = job.Id;
+        LazyContext = new Lazy<ClocJobContext>(() => options.ParseContext());
+        ClocJobOptionsValidator.Validate(options);
     }
 
-    public ClocJobExecutor()
+    public ClocJobExecutor(ClocJob job, Action<ClocJobOptions> configure)
     {
-        _jobs = new List<IClocJob>();
+        _job = job;
+        var options = new ClocJobOptions();
+        configure(options);
+
+        options.Id = job.Id;
+        Options = options;
+        LazyContext = new Lazy<ClocJobContext>(() => options.ParseContext());
+        ClocJobOptionsValidator.Validate(Options);
     }
 
-    public async Task ExecuteAsync(
-        ClocJobOptions options, 
-        CancellationToken cancellationToken = default)
+    public override async Task ExecuteAsync(CancellationToken cancellationToken = default)
     {
-        var job = _jobs.FirstOrDefault(j => j.Id == options.Id);
-        if (job is null)
-        {
-            throw new ClocJobInstanceMissingException(options.Id);
-        }
-        var context = options.ParseContext();
-        await job.ExecuteAsync(context, cancellationToken);
-    }
-
-    public void AddJob<TClocJob>(TClocJob job = default)
-        where TClocJob : class, IClocJob
-    {
-        if (job != null)
-        {
-            _jobs.Add(job);
-        }
+        await _job.ExecuteAsync(Context, cancellationToken);
     }
 }

@@ -1,7 +1,6 @@
 ﻿namespace Cloc;
 
-public static class Constants
+internal static class Constants
 {
-    public const string DefaultJobType = "Default";
     public const int DaysInWeek = 7;
 }

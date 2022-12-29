@@ -35,8 +35,4 @@
     <ProjectReference Include="..\Cloc.Core\Cloc.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Scheduler\" />
-  </ItemGroup>
-
 </Project>

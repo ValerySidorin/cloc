@@ -20,6 +20,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.AspNetCore", "sample
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cloc.Hosting", "src\Cloc.Hosting\Cloc.Hosting.csproj", "{6FAB1615-93E0-4027-8419-9EF51C5C5E95}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Console", "samples\Sample.Console\Sample.Console.csproj", "{DBCBC849-073E-4416-BD4F-C8AA3C732FB8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{6FAB1615-93E0-4027-8419-9EF51C5C5E95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FAB1615-93E0-4027-8419-9EF51C5C5E95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FAB1615-93E0-4027-8419-9EF51C5C5E95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBCBC849-073E-4416-BD4F-C8AA3C732FB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBCBC849-073E-4416-BD4F-C8AA3C732FB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBCBC849-073E-4416-BD4F-C8AA3C732FB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBCBC849-073E-4416-BD4F-C8AA3C732FB8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{2B853202-E7CD-43D6-879F-862909D7A68B} = {5D60AF45-794B-4A9D-ACEE-F52D161A20BB}
 		{A88710E1-28AC-4C70-87E5-25B631908E7D} = {31BA8E5C-4609-4732-8E67-75FF09AF8B82}
 		{6FAB1615-93E0-4027-8419-9EF51C5C5E95} = {5D60AF45-794B-4A9D-ACEE-F52D161A20BB}
+		{DBCBC849-073E-4416-BD4F-C8AA3C732FB8} = {31BA8E5C-4609-4732-8E67-75FF09AF8B82}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FFC92560-A0AB-4BC7-BFF9-BADFE97DC62A}

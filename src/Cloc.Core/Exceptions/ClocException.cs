@@ -1,17 +1,16 @@
-﻿namespace Cloc.Core.Exceptions
+﻿namespace Cloc;
+
+public class ClocException : Exception
 {
-    public class ClocException : Exception
+    public ClocException(Exception innerException)
+        : base("Cloc exception occured.", innerException) { }
+
+    public ClocException(string message, Exception innerException)
+        : base(message, innerException) { }
+
+    public ClocException(string message)
+        : base(message)
     {
-        public ClocException(Exception innerException)
-            : base("Cloc exception occured", innerException) { }
 
-        public ClocException(string message, Exception innerException)
-            : base(message, innerException) { }
-
-        public ClocException(string message)
-            : base(message)
-        {
-
-        }
     }
 }

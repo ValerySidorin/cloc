@@ -1,40 +1,31 @@
-﻿using Cloc.Core.Exceptions;
-using Cloc.Core.Extensions;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Cloc.Hosting;
 
-internal class ScopedClocJobExecutor : IClocJobExecutor
+internal class ScopedClocJobExecutor : ClocJobExecutorBase
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly IServiceCollection _services;
 
     public ScopedClocJobExecutor(
-        IServiceProvider serviceProvider, 
-        IServiceCollection services)
+        IServiceProvider serviceProvider,
+        ClocJobOptions options)
+        : base(options)
     {
         _serviceProvider = serviceProvider;
-        _services = services;
     }
 
-    public async Task ExecuteAsync(
-        ClocJobOptions options, 
-        CancellationToken cancellationToken = default)
+    public override async Task ExecuteAsync(CancellationToken cancellationToken = default)
     {
         using var scope = _serviceProvider.CreateScope();
         var job = scope.ServiceProvider.GetServices<ScopedClocJob>()
-            .FirstOrDefault(j => j.Id == options.Id);
+            .FirstOrDefault(j => j.Id == Options.Id);
+
         if (job is null)
         {
-            throw new ClocJobInstanceMissingException(options.Id);
+            throw new ClocJobExecutorException(
+                "Executor could not find registered job with Id: {0}", Options.Id);
         }
-        var context = options.ParseContext();
-        await job.ExecuteAsync(context, cancellationToken);
-    }
 
-    public void AddJob<TClocJob>(TClocJob job)
-        where TClocJob : class, IClocJob
-    {
-        throw new NotImplementedException();
+        await job.ExecuteAsync(Context, cancellationToken);
     }
 }

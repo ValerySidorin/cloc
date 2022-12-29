@@ -4,7 +4,7 @@ public class ClocJobOptions
 {
     public string Id { get; set; }
 
-    public DateTimeOffset? StartingAt { get; set; }
+    public DateTimeOffset StartingAt { get; set; } = (DateTimeOffset)DateTime.Today;
 
     public Interval Interval { get; set; } = Interval.Second;
 

@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics;
+using System.Text.Json;
 
 namespace Cloc;
 
@@ -6,9 +7,10 @@ public class ClocJobContext
 {
     private JsonDocument _args;
 
-    public ClocJobContext(string args)
+    public ClocJobContext(JsonDocument args)
     {
-        _args = JsonDocument.Parse(args);
+        Debug.Assert(args is not null);
+        _args = args;
     }
 
     public JsonElement GetRoot()
