@@ -38,6 +38,12 @@ var executor = new ClocJobExecutor(new ConsoleJob(), options =>
 
 scheduler.Enlist(executor);
 scheduler.Start(cts.Token);
+await Task.Delay(TimeSpan.FromSeconds(10));
+
+// Don't forget to stop or dispose scheduler to release all its internal timers
+scheduler.Stop();
+// scheduler.Dispose();
+await Task.Delay(TimeSpan.FromSeconds(10));
 ```
 ### AspNetCore
 Cloc works great with .Net dependency injection toolkit. It can execute both singleton and scoped jobs. Scoped job example below:
