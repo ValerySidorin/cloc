@@ -79,10 +79,10 @@ Note, that you need to define cloc options in your appsettings.json config file:
       }
     ]
   }
+}
 ```
-Then just register your jobs and scheduler service:
+Then just register cloc:
 ```csharp
 builder.Services.AddCloc(builder.Configuration);
-builder.Services.AddClocJob<SampleScopedJob>();
-builder.Services.AddClocJob<SampleJob>();
 ```
+You don't need to register all jobs, they are being added dynamically from your calling assembly and it referenced ones.

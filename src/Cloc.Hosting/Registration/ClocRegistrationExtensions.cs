@@ -1,22 +1,23 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace Cloc.Hosting;
 
 public static class ClocRegistrationExtensions
 {
-    public static IServiceCollection AddClocJob<TClocJob>(
-        this IServiceCollection services)
-        where TClocJob : class, IClocJob
+    private static IServiceCollection AddClocJob(
+        this IServiceCollection services, 
+        Type type)
     {
-        if (typeof(TClocJob).BaseType == typeof(ClocJob))
+        if (type.BaseType == typeof(ClocJob))
         {
-            services.AddSingleton(typeof(ClocJob), typeof(TClocJob));
+            services.AddSingleton(typeof(ClocJob), type);
         }
-        else if (typeof(TClocJob).BaseType == typeof(ScopedClocJob))
+        else if (type.BaseType == typeof(ScopedClocJob))
         {
-            services.AddScoped(typeof(ScopedClocJob), typeof(TClocJob));
+            services.AddScoped(typeof(ScopedClocJob), type);
         }
 
         return services;
@@ -36,6 +37,19 @@ public static class ClocRegistrationExtensions
             configure(options);
         }
 
+        var types = Assembly.GetCallingAssembly()
+            .GetReferencedAssemblies()
+            .Select(Assembly.Load)
+            .Append(Assembly.GetCallingAssembly())
+            .SelectMany(a => a.GetTypes())
+            .Where(t => typeof(IClocJob).IsAssignableFrom(t) && !t.IsAbstract && t.IsClass)
+            .ToList();
+
+        foreach (var type in types)
+        {
+            services.AddClocJob(type);
+        }
+
         if (!services.Any(s => s.ServiceType == typeof(ClocBackgroundService)))
         {
             services.AddHostedService(sp =>
@@ -45,86 +59,6 @@ public static class ClocRegistrationExtensions
             });
         }
 
-        return services;
-    }
-
-    public static IServiceCollection AddCloc<TClocJob>(
-        this IServiceCollection services,
-        IConfiguration configuration,
-        Action<ClocOptions> configure = null,
-        string configSectionName = ClocOptions.DefaultSectionName)
-        where TClocJob : class, IClocJob
-    {
-        services.AddClocJob<TClocJob>();
-        services.AddCloc(configuration, configure, configSectionName);
-        return services;
-    }
-
-    public static IServiceCollection AddCloc<TClocJob1, TClocJob2>(
-        this IServiceCollection services,
-        IConfiguration configuration,
-        Action<ClocOptions> configure = null,
-        string configSectionName = ClocOptions.DefaultSectionName)
-        where TClocJob1 : class, IClocJob
-        where TClocJob2 : class, IClocJob
-    {
-        services.AddClocJob<TClocJob1>();
-        services.AddClocJob<TClocJob2>();
-        services.AddCloc(configuration, configure, configSectionName);
-        return services;
-    }
-
-    public static IServiceCollection AddCloc<TClocJob1, TClocJob2, TClocJob3>(
-        this IServiceCollection services,
-        IConfiguration configuration,
-        Action<ClocOptions> configure = null,
-        string configSectionName = ClocOptions.DefaultSectionName)
-        where TClocJob1 : class, IClocJob
-        where TClocJob2 : class, IClocJob
-        where TClocJob3: class, IClocJob
-    {
-        services.AddClocJob<TClocJob1>();
-        services.AddClocJob<TClocJob2>();
-        services.AddClocJob<TClocJob3>();
-        services.AddCloc(configuration, configure, configSectionName);
-        return services;
-    }
-
-    public static IServiceCollection AddCloc<TClocJob1, TClocJob2, TClocJob3, TClocJob4>(
-        this IServiceCollection services,
-        IConfiguration configuration,
-        Action<ClocOptions> configure = null,
-        string configSectionName = ClocOptions.DefaultSectionName)
-        where TClocJob1 : class, IClocJob
-        where TClocJob2 : class, IClocJob
-        where TClocJob3 : class, IClocJob
-        where TClocJob4 : class, IClocJob
-    {
-        services.AddClocJob<TClocJob1>();
-        services.AddClocJob<TClocJob2>();
-        services.AddClocJob<TClocJob3>();
-        services.AddClocJob<TClocJob4>();
-        services.AddCloc(configuration, configure, configSectionName);
-        return services;
-    }
-
-    public static IServiceCollection AddCloc<TClocJob1, TClocJob2, TClocJob3, TClocJob4, TClocJob5>(
-        this IServiceCollection services,
-        IConfiguration configuration,
-        Action<ClocOptions> configure = null, 
-        string configSectionName = ClocOptions.DefaultSectionName)
-        where TClocJob1 : class, IClocJob
-        where TClocJob2 : class, IClocJob
-        where TClocJob3 : class, IClocJob
-        where TClocJob4 : class, IClocJob
-        where TClocJob5 : class, IClocJob
-    {
-        services.AddClocJob<TClocJob1>();
-        services.AddClocJob<TClocJob2>();
-        services.AddClocJob<TClocJob3>();
-        services.AddClocJob<TClocJob4>();
-        services.AddClocJob<TClocJob5>();
-        services.AddCloc(configuration, configure, configSectionName);
         return services;
     }
 

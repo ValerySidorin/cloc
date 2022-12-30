@@ -1,5 +1,4 @@
 using Cloc.Hosting;
-using Sample.AspNetCore.Jobs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,9 +13,6 @@ builder.Services.AddCloc(builder.Configuration, configure: options =>
 {
     options.ExitOnJobFailed = true;
 });
-builder.Services.AddClocJob<HelloWorldJob>();
-builder.Services.AddClocJob<SampleScopedJob>();
-builder.Services.AddClocJob<SampleJob>();
 
 var app = builder.Build();
 

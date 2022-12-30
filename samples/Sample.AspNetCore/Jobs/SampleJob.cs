@@ -15,7 +15,7 @@ namespace Sample.AspNetCore.Jobs
 
         public override Task ExecuteAsync(ClocJobContext context, CancellationToken cancellationToken = default)
         {
-            _logger.LogInformation($"Scheduler running sample async job at time: {DateTimeOffset.Now}");
+            _logger.LogInformation($"Scheduler running sample job at time: {DateTimeOffset.Now}");
             return Task.CompletedTask;
         }
     }
